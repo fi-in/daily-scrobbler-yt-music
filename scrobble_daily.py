@@ -12,7 +12,11 @@ password_hash = pylast.md5(os.getenv("LASTFM_PASSWORD"))
 
 
 def to_scrobble(entry: dict) -> dict:
-    artists = ", ".join(a["name"] for a in entry.get("artists") if a.get("id") or [])
+    artists = ", ".join(
+    a["name"]
+    for a in (entry.get("artists") or [])
+    if a.get("id")
+)
     primary_artist = entry["artists"][0]["name"] if entry.get("artists") else artists
     album = (entry.get("album") or {}).get("name", "")
     duration_seconds = entry.get("duration_seconds",180)
